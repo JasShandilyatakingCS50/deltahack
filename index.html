@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deltamath Modifier - Chrome Extension</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-soft: #020617;
+      --card: rgba(15, 23, 42, 0.9);
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.35);
+      --accent-2: #a855f7;
+      --accent-3: #22d3ee;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.15);
+      --glass: rgba(15, 23, 42, 0.8);
+      --radius-xl: 32px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: background 250ms ease, color 250ms ease, transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, rgba(56,189,248,0.08) 0, transparent 55%),
+                  radial-gradient(circle at top right, rgba(59,130,246,0.12) 0, transparent 60%),
+                  radial-gradient(circle at bottom, rgba(168,85,247,0.12) 0, transparent 60%),
+                  var(--bg);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.24;
+      mix-blend-mode: soft-light;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.40'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 20px;
+      background: radial-gradient(circle at top left, rgba(59,130,246,0.25) 0, transparent 60%),
+                  linear-gradient(to right, rgba(15,23,42,0.9), rgba(15,23,42,0.9));
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.3);
+      box-shadow: 0 18px 60px rgba(15,23,42,0.9);
+      backdrop-filter: blur(24px);
+      position: sticky;
+      top: 16px;
+      z-index: 40;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 20%, #38bdf8 0, #1d4ed8 32%, #a855f7 70%, #0f172a 100%);
+      border: 1px solid rgba(248,250,252,0.7);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 14px 35px rgba(15,23,42,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .brand-tagline {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-pill {
+      font-size: 11px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15,23,42,0.85);
+    }
+
+    .nav-pill-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 5px rgba(34,197,94,0.3);
+    }
+
+    .btn-primary {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: radial-gradient(circle at 0 0, #22d3ee 0, #3b82f6 40%, #a855f7 100%);
+      color: #f9fafb;
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.65);
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(248,250,252,0.45), transparent 55%, rgba(248,250,252,0.35));
+      opacity: 0;
+      transform: translateX(-40%);
+      transition: all 350ms ease;
+    }
+
+    .btn-primary:hover::before {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+
+    .btn-primary span.icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(15,23,42,0.7);
+      box-shadow: 0 0 0 1px rgba(15,23,42,0.7);
+      font-size: 12px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.1fr);
+      gap: 40px;
+      padding: 72px 6px 40px;
+      align-items: center;
+    }
+
+    @media (max-width: 880px) {
+      header {
+        border-radius: 24px;
+        padding-inline: 14px;
+      }
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 56px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page-shell {
+        padding-inline: 16px;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero {
+        padding-top: 48px;
+      }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px 4px 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.3);
+      background: radial-gradient(circle at left, rgba(56,189,248,0.3) 0, transparent 55%), rgba(15,23,42,0.9);
+      font-size: 11px;
+      color: var(--text-muted);
+      gap: 8px;
+    }
+
+    .hero-eyebrow-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(148,163,184,0.5);
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 4vw, 3.4rem);
+      line-height: 1.05;
+      margin-top: 22px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title span.gradient {
+      background: linear-gradient(120deg, #38bdf8, #a855f7, #f97316);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 34rem;
+    }
+
+    .hero-subtitle strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 26px;
+      align-items: center;
+    }
+
+    .btn-ghost {
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.8);
+      color: var(--text-main);
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-ghost svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .hero-footnote {
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-footnote span.tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148,163,184,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .hero-visual-shell {
+      position: relative;
+      min-height: 320px;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(24px);
+      opacity: 0.75;
+      mix-blend-mode: screen;
+      animation: floatBlob 16s ease-in-out infinite;
+    }
+
+    .blob.blob-blue {
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle at 20% 0, rgba(56,189,248,0.9), transparent 60%);
+      top: -40px;
+      right: -40px;
+    }
+
+    .blob.blob-purple {
+      width: 260px;
+      height: 240px;
+      background: radial-gradient(circle at 80% 100%, rgba(168,85,247,0.9), transparent 60%);
+      bottom: -40px;
+      left: -40px;
+      animation-delay: -4s;
+    }
+
+    .blob.blob-cyan {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle at 50% 50%, rgba(45,212,191,0.85), transparent 65%);
+      bottom: 50px;
+      right: 20px;
+      animation-delay: -8s;
+    }
+
+    @keyframes floatBlob {
+      0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: 0.9; }
+      25% { transform: translate3d(12px,-18px,0) scale(1.04); opacity: 0.8; }
+      50% { transform: translate3d(-14px,10px,0) scale(1.02); opacity: 0.85; }
+      75% { transform: translate3d(4px,18px,0) scale(1.06); opacity: 0.75; }
+    }
+
+    .hero-card {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 20px 20px 18px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.96));
+      border: 1px solid rgba(148,163,184,0.4);
+      box-shadow: 0 20px 70px rgba(15,23,42,0.95);
+      backdrop-filter: blur(26px);
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transform: perspective(1200px) rotateX(8deg) rotateY(-10deg);
+      animation: floatCard 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatCard {
+      0% { transform: perspective(1200px) rotateX(8deg) rotateY(-10deg) translateY(0); }
+      50% { transform: perspective(1200px) rotateX(6deg) rotateY(-6deg) translateY(-8px); }
+      100% { transform: perspective(1200px) rotateX(9deg) rotateY(-12deg) translateY(4px); }
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(120deg, rgba(56,189,248,0.7), rgba(129,140,248,0.2), rgba(248,250,252,0.15), rgba(236,72,153,0.25));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .hero-card-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-card-title span.label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+
+    .hero-card-title h2 {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-card-badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,0.6);
+      background: rgba(15,23,42,0.9);
+      font-size: 11px;
+      color: #e0f2fe;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-card-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #0ea5e9;
+      box-shadow: 0 0 0 4px rgba(14,165,233,0.35);
+    }
+
+    .hero-card-body {
+      margin-top: 4px;
+      border-radius: 20px;
+      padding: 14px 14px 10px;
+      background: radial-gradient(circle at top left, rgba(30,64,175,0.85) 0, rgba(15,23,42,1) 46%),
+                  radial-gradient(circle at bottom right, rgba(236,72,153,0.55) 0, transparent 50%);
+      border: 1px solid rgba(30,64,175,0.9);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 40px rgba(15,23,42,0.9);
+    }
+
+    .hero-card-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 11px;
+    }
+
+    .hero-card-tabs {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148,163,184,0.7);
+    }
+
+    .hero-card-tab {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      color: rgba(209,213,219,0.65);
+      font-size: 10px;
+      cursor: default;
+    }
+
+    .hero-card-tab.active {
+      background: linear-gradient(135deg, rgba(56,189,248,0.95), rgba(129,140,248,0.9));
+      color: #0b1120;
+      border-color: rgba(15,23,42,0.9);
+      box-shadow: 0 0 0 1px rgba(15,23,42,1);
+    }
+
+    .hero-card-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15,23,42,0.85);
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+    }
+
+    .hero-card-toggle-label {
+      font-size: 10px;
+      color: rgba(226,232,240,0.8);
+    }
+
+    .hero-card-toggle-switch {
+      width: 26px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(31,41,55,0.95);
+      position: relative;
+      box-shadow: inset 0 0 0 1px rgba(15,23,42,1);
+    }
+
+    .hero-card-toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 20% 20%, #f9fafb 0, #e5e7eb 40%, #9ca3af 100%);
+      box-shadow: 0 0 0 2px rgba(15,23,42,1), 0 0 14px rgba(96,165,250,0.85);
+      transform: translateX(9px);
+    }
+
+    .hero-card-main {
+      border-radius: 18px;
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,0.92) 0, rgba(15,23,42,0.99) 55%),
+                  linear-gradient(to bottom, rgba(15,23,42,0.9), rgba(15,23,42,1));
+      border: 1px solid rgba(15,23,42,1);
+      box-shadow: 0 18px 32px rgba(15,23,42,0.95);
+      padding: 12px 12px 10px;
+    }
+
+    .hero-card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 12px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(30,64,175,0.7);
+      margin-bottom: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card-row::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(56,189,248,0.08), rgba(56,189,248,0), rgba(236,72,153,0.12));
+      opacity: 0;
+      transform: translateX(-20%);
+      pointer-events: none;
+    }
+
+    .hero-card-row.completed::before {
+      animation: progressGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes progressGlow {
+      0% { opacity: 0; transform: translateX(-30%); }
+      30% { opacity: 1; transform: translateX(0%); }
+      70% { opacity: 1; transform: translateX(20%); }
+      100% { opacity: 0; transform: translateX(40%); }
+    }
+
+    .hero-task-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .hero-task-label svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .hero-task-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      color: rgba(156,163,175,0.95);
+    }
+
+    .hero-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(55,65,81,0.95);
+    }
+
+    .hero-progress-shell {
+      margin-top: 5px;
+      border-radius: 999px;
+      border: 1px solid rgba(30,64,175,0.9);
+      padding: 1px;
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.35), rgba(30,64,175,0.9));
+    }
+
+    .hero-progress-track {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.95);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-progress-bar {
+      position: absolute;
+      inset: 0;
+      transform-origin: left;
+      background: linear-gradient(90deg, #22c55e, #16a34a, #84cc16);
+      box-shadow: 0 0 10px rgba(34,197,94,0.9);
+      transform: scaleX(0.12);
+      animation: fillProgress 3.6s cubic-bezier(0.19, 1, 0.22, 1) infinite alternate;
+    }
+
+    @keyframes fillProgress {
+      0% { transform: scaleX(0.1); }
+      40% { transform: scaleX(0.7); }
+      60% { transform: scaleX(0.92); }
+      100% { transform: scaleX(1); }
+    }
+
+    .hero-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 8px;
+      font-size: 11px;
+      color: rgba(209,213,219,0.95);
+    }
+
+    .hero-card-footer span.highlight {
+      color: #bbf7d0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-card-footer span.highlight svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .hero-orbit {
+      position: absolute;
+      inset: -40px;
+      border-radius: inherit;
+      border: 1px dashed rgba(148,163,184,0.3);
+      opacity: 0.5;
+      pointer-events: none;
+      transform-origin: center;
+      animation: orbitSpin 22s linear infinite;
+    }
+
+    @keyframes orbitSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-orbit svg {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      fill: rgba(129,140,248,0.85);
+      filter: drop-shadow(0 0 8px rgba(129,140,248,0.8));
+    }
+
+    .hero-orbit svg.orbit-icon-1 { top: 14%; left: 14%; }
+    .hero-orbit svg.orbit-icon-2 { top: 18%; right: 26%; }
+    .hero-orbit svg.orbit-icon-3 { bottom: 16%; left: 28%; }
+
+    .section {
+      margin-top: 48px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .section-title-block h2 {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .section-title-block p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .section-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      font-size: 11px;
+    }
+
+    .chip {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.85);
+      color: rgba(209,213,219,0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .section-chip-row {
+        justify-content: flex-start;
+      }
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .feature-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .feature-card {
+      border-radius: 20px;
+      padding: 16px 14px 14px;
+      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.96));
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.95);
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0px);
+    }
+
+    .feature-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.6), rgba(59,130,246,0), rgba(168,85,247,0.7));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 280ms ease;
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 26px 60px rgba(15,23,42,0.98);
+    }
+
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 10px;
+      background: radial-gradient(circle at 10% 0, rgba(56,189,248,0.9), rgba(15,23,42,1));
+      box-shadow: 0 12px 22px rgba(37,99,235,0.8);
+      border: 1px solid rgba(248,250,252,0.7);
+    }
+
+    .feature-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .feature-title {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .feature-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(156,163,175,0.95);
+    }
+
+    .feature-meta span.pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.85);
+      background: rgba(15,23,42,0.96);
+    }
+
+    .feature-meta span.badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      display: inline-block;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.3);
+      margin-right: 5px;
+    }
+
+    .flow {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.2fr);
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 880px) {
+      .flow {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .flow-diagram {
+      position: relative;
+      border-radius: 28px;
+      padding: 18px 18px 16px;
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.45), rgba(15,23,42,1));
+      border: 1px solid rgba(59,130,246,0.9);
+      box-shadow: 0 28px 80px rgba(15,23,42,0.98);
+      overflow: hidden;
+    }
+
+    .flow-diagram-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: 11px;
+    }
+
+    .flow-diagram-badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(226,232,240,0.9);
+    }
+
+    .flow-diagram-badge svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .flow-diagram-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(226,232,240,0.7);
+    }
+
+    .flow-rail {
+      margin-top: 6px;
+      border-radius: 999px;
+      height: 26px;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(30,64,175,1);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow: hidden;
+      position: relative;
+    }
+
+    .flow-step-pill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: rgba(209,213,219,0.9);
+      position: relative;
+      z-index: 1;
+    }
+
+    .flow-step-highlight {
+      position: absolute;
+      inset: 1px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 20% 0, rgba(34,197,94,0.9), rgba(56,189,248,0.7));
+      transform: translateX(0%);
+      width: calc(100% / 3);
+      animation: flowStepper 9s ease-in-out infinite;
+    }
+
+    @keyframes flowStepper {
+      0%, 20% { transform: translateX(0%); }
+      34%, 54% { transform: translateX(100%); }
+      68%, 88% { transform: translateX(200%); }
+      100% { transform: translateX(0%); }
+    }
+
+    .flow-body {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 640px) {
+      .flow-body {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .flow-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .flow-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.92);
+      border: 1px solid rgba(148,163,184,0.6);
+      color: rgba(226,232,240,0.9);
+    }
+
+    .flow-chip span.bullet {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #facc15;
+      box-shadow: 0 0 0 4px rgba(250,204,21,0.35);
+    }
+
+    .flow-chip span.label {
+      font-weight: 500;
+      font-size: 11px;
+    }
+
+    .flow-note {
+      font-size: 11px;
+      color: rgba(226,232,240,0.9);
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .flow-note strong {
+      color: #facc15;
+      font-weight: 500;
+    }
+
+    .flow-console {
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.96));
+      border: 1px solid rgba(30,64,175,0.9);
+      padding: 10px 12px 11px;
+      font-family: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      color: rgba(226,232,240,0.92);
+      box-shadow: 0 18px 46px rgba(15,23,42,1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .flow-console-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      color: rgba(148,163,184,0.9);
+    }
+
+    .flow-console-dots {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .flow-console-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #ef4444;
+    }
+
+    .flow-console-dot:nth-child(2) { background: #f59e0b; }
+    .flow-console-dot:nth-child(3) { background: #22c55e; }
+
+    .flow-console-body {
+      padding-top: 4px;
+      border-top: 1px solid rgba(55,65,81,0.95);
+      max-height: 140px;
+      overflow: hidden;
+    }
+
+    .flow-line {
+      display: flex;
+      gap: 10px;
+      margin-top: 2px;
+      white-space: nowrap;
+      align-items: baseline;
+    }
+
+    .flow-line.fade {
+      opacity: 0.6;
+    }
+
+    .flow-line-number {
+      color: rgba(75,85,99,0.95);
+    }
+
+    .flow-line-code {
+      flex: 1;
+    }
+
+    .token-keyword { color: #38bdf8; }
+    .token-func { color: #a5b4fc; }
+    .token-str { color: #f97316; }
+    .token-comment { color: #6b7280; font-style: italic; }
+    .token-boolean { color: #4ade80; }
+
+    .flow-sparkle {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 10% 0, rgba(248,250,252,0.25), transparent 50%),
+                  radial-gradient(circle at 80% 100%, rgba(248,250,252,0.16), transparent 50%);
+      opacity: 0;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      animation: sparkle 7s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 40% { opacity: 0; }
+      50%, 70% { opacity: 0.7; }
+      100% { opacity: 0; }
+    }
+
+    .flow-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .flow-copy p + p {
+      margin-top: 10px;
+    }
+
+    .flow-copy strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .cta-section {
+      margin-top: 60px;
+    }
+
+    .cta-shell {
+      border-radius: 30px;
+      padding: 22px 20px 20px;
+      background: radial-gradient(circle at 0 0, rgba(59,130,246,0.55), rgba(15,23,42,1));
+      border: 1px solid rgba(37,99,235,1);
+      box-shadow: 0 30px 90px rgba(15,23,42,0.98);
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 20px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 820px) {
+      .cta-shell {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .cta-shell::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(from 180deg, rgba(59,130,246,0.35), rgba(56,189,248,0.8), rgba(59,130,246,0.35), rgba(168,85,247,0.8));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.9;
+      animation: ctaBorderSpin 16s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes ctaBorderSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .cta-main-title {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .cta-subtitle {
+      font-size: 13px;
+      color: rgba(226,232,240,0.95);
+      max-width: 480px;
+    }
+
+    .cta-actions {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .cta-tag-row {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 10px;
+      color: rgba(226,232,240,0.8);
+    }
+
+    .cta-tag {
+      border-radius: 999px;
+      padding: 3px 9px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cta-tag svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .cta-metric-card {
+      border-radius: 22px;
+      padding: 16px 14px 12px;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid rgba(148,163,184,0.7);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.98);
+      font-size: 11px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-metric-card h3 {
+      font-size: 12px;
+      margin-bottom: 6px;
+      color: rgba(226,232,240,0.9);
+    }
+
+    .cta-metric-main {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .cta-metric-value {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .cta-metric-chip {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(34,197,94,0.7);
+      background: rgba(15,23,42,0.96);
+      color: #bbf7d0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cta-metric-chip svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .cta-meter-shell {
+      margin-top: 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(55,65,81,0.95);
+      padding: 2px;
+      overflow: hidden;
+    }
+
+    .cta-meter-inner {
+      height: 9px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #4ade80, #a3e635);
+      transform-origin: left;
+      transform: scaleX(0.1);
+      animation: ctaMeter 4.8s cubic-bezier(0.19,1,0.22,1) infinite alternate;
+      box-shadow: 0 0 12px rgba(34,197,94,0.9);
+    }
+
+    @keyframes ctaMeter {
+      0% { transform: scaleX(0.12); }
+      40% { transform: scaleX(0.72); }
+      60% { transform: scaleX(0.86); }
+      100% { transform: scaleX(1); }
+    }
+
+    footer {
+      margin-top: 26px;
+      font-size: 11px;
+      color: rgba(148,163,184,0.85);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: rgba(148,163,184,0.9);
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    .footer-links a:hover {
+      color: rgba(226,232,240,0.96);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+      transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  </style>
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <main>
+    <div class="page-shell">
+      <header>
+        <div class="brand">
+          <div class="brand-logo">
+            <svg viewBox="0 0 40 40" aria-hidden="true">
+              <defs>
+                <linearGradient id="gradD" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#e0f2fe" />
+                  <stop offset="45%" stop-color="#38bdf8" />
+                  <stop offset="100%" stop-color="#a855f7" />
+                </linearGradient>
+              </defs>
+              <rect x="4" y="4" width="32" height="32" rx="10" fill="url(#gradD)" opacity="0.15" />
+              <path d="M10 26.5L16.5 13.5C17 12.5 18.5 12.5 19 13.5L22 19.6L24 16C24.5 15.1 25.8 15.1 26.3 16L30 23.5" fill="none" stroke="url(#gradD)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="12" cy="27" r="1.4" fill="#22c55e" />
+              <circle cx="21.8" cy="20.2" r="1.2" fill="#e5e7eb" />
+              <circle cx="30" cy="24" r="1.4" fill="#facc15" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Deltamath Modifier</span>
+            <span class="brand-tagline">Chrome extension landing page</span>
+          </div>
+        </div>
+        <div class="nav-cta">
+          <div class="nav-pill">
+            <span class="nav-pill-dot"></span>
+            Live preview mode
+          </div>
+          <a href="https://chromewebstore.google.com/detail/mailtracker-email-tracker/ekfbnepodnfmfakhoahmcaompfnhmdda">
+          <button class="btn-primary" type="button">
+            <span>Install extension</span>
+            <span class="icon">⇩</span>
+          </button>
+          </a>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy reveal">
+          <div class="hero-eyebrow">
+            <span class="hero-eyebrow-pill">Visual progress overlay</span>
+            <span>Give your Deltamath dashboard a glow‑up.</span>
+          </div>
+          <h1 class="hero-title">
+            Make your <span class="gradient">Deltamath</span>
+            look like you live in the completion screen.
+          </h1>
+          <p class="hero-subtitle">
+            Deltamath Modifier is a playful Chrome extension that adds a <strong>visual overlay</strong> on top of your Deltamath exercises, turning your dashboard into a hyper‑polished, fully‑"done" aesthetic. It’s all about the look—cosmetics, vibes, and animated progress.
+          </p>
+
+          <div class="hero-actions">
+            <a href="https://chromewebstore.google.com/detail/mailtracker-email-tracker/ekfbnepodnfmfakhoahmcaompfnhmdda">
+            <button class="btn-primary" type="button">
+              <span>Get the extension</span>
+              <span class="icon">★</span>
+              
+            </button></a>
+            <a href="#how-it-works" class="btn-ghost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 11.5L10.5 17L19 7"/>
+              </svg>
+              See how it looks
+            </a>
+          </div>
+
+          <div class="hero-footnote">
+            <span class="tag">Purely visual • For showcase & demos only</span>
+            <span>Does not solve problems or change grades. Just UI magic ✨</span>
+          </div>
+        </div>
+
+        <div class="hero-visual-shell reveal">
+          <div class="blob blob-blue"></div>
+          <div class="blob blob-purple"></div>
+          <div class="blob blob-cyan"></div>
+
+          <div class="hero-card">
+            <div class="hero-orbit">
+              <svg class="orbit-icon-1" viewBox="0 0 24 24">
+                <path d="M5 12L10 17L19 7" />
+              </svg>
+              <svg class="orbit-icon-2" viewBox="0 0 24 24">
+                <path d="M4 12C4 7.6 7.6 4 12 4C16.4 4 20 7.6 20 12C20 16.4 16.4 20 12 20" />
+              </svg>
+              <svg class="orbit-icon-3" viewBox="0 0 24 24">
+                <path d="M4 7H20M4 12H16M4 17H12" />
+              </svg>
+            </div>
+
+            <div class="hero-card-header">
+              <div class="hero-card-title">
+                <span class="label">Overlay preview</span>
+                <h2>
+                  Deltamath • <span style="font-weight:400;font-size:13px;color:rgba(148,163,184,0.95)">Session mock</span>
+                </h2>
+              </div>
+              <div class="hero-card-badge">
+                <span class="hero-card-badge-dot"></span>
+                <span>Dashboard beautified</span>
+              </div>
+            </div>
+
+            <div class="hero-card-body">
+              <div class="hero-card-toolbar">
+                <div class="hero-card-tabs">
+                  <div class="hero-card-tab active">Completed view</div>
+                  <div class="hero-card-tab">Original</div>
+                </div>
+                <div class="hero-card-toggle" title="Cosmetic overlay only">
+                  <span class="hero-card-toggle-label">Visual mod</span>
+                  <div class="hero-card-toggle-switch">
+                    <div class="hero-card-toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="hero-card-main">
+                <div class="hero-card-row completed">
+                  <div class="hero-task-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M8.5 12.5L11 14.8L15.5 9.5" />
+                    </svg>
+                    <span>Algebra – Linear Systems Set A</span>
+                  </div>
+                  <div class="hero-task-meta">
+                    <span class="hero-pill">20 / 20</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+                <div class="hero-card-row completed">
+                  <div class="hero-task-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M9 12.5L11.2 14.5L15.5 9.5" />
+                    </svg>
+                    <span>Geometry – Angle Chasing Drill</span>
+                  </div>
+                  <div class="hero-task-meta">
+                    <span class="hero-pill">18 / 18</span>
+                    <span>Perfect streak</span>
+                  </div>
+                </div>
+                <div class="hero-card-row completed">
+                  <div class="hero-task-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M9 12.5L11.2 14.5L15.5 9.5" />
+                    </svg>
+                    <span>Pre‑Calc – Trig Identities</span>
+                  </div>
+                  <div class="hero-task-meta">
+                    <span class="hero-pill">24 / 24</span>
+                    <span>Flawless</span>
+                  </div>
+                </div>
+
+                <div class="hero-progress-shell">
+                  <div class="hero-progress-track">
+                    <div class="hero-progress-bar"></div>
+                  </div>
+                </div>
+
+                <div class="hero-card-footer">
+                  <span class="highlight">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 3L13.9 8.1L19.5 8.6L15 12.1L16.4 17.6L12 14.7L7.6 17.6L9 12.1L4.5 8.6L10.1 8.1L12 3Z" />
+                    </svg>
+                    Dashboard in showcase mode
+                  </span>
+                  <span style="font-size:10px;color:rgba(156,163,175,0.95)">
+                    Preview only · Real assignments stay untouched
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" id="features">
+        <div class="section-header">
+          <div class="section-title-block">
+            <h2>Built to flex on your own screen—nothing else.</h2>
+            <p>Animations, gradients, and fake progress bars. Your Deltamath, but make it aesthetic.</p>
+          </div>
+          <div class="section-chip-row">
+            <div class="chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5V19M5 12H19" />
+              </svg>
+              Drop‑in Chrome extension
+            </div>
+            <div class="chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7V12L15 15" />
+              </svg>
+              Live transitions everywhere
+            </div>
+            <div class="chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7H20M4 12H14M4 17H11" />
+              </svg>
+              No backend · No data stored
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 19L10 5L14 14L19 9L15 19H5Z" />
+              </svg>
+            </div>
+            <h3 class="feature-title">"Everything done" visual mode</h3>
+            <p class="feature-desc">
+              Instantly renders your exercise list as if every set is maxed out—green checks, 100% bars, and clean streak labels. It’s a visual fantasy layer on top of the real site.
+            </p>
+            <div class="feature-meta">
+              <span class="pill">Customizable intensity</span>
+              <span><span class="badge-dot"></span>Overlay only</span>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" style="background:radial-gradient(circle at 0 0,rgba(251,191,36,0.9),rgba(15,23,42,1));box-shadow:0 12px 24px rgba(251,191,36,0.7)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12C4 7.6 7.6 4 12 4C16.4 4 20 7.6 20 12C20 16.4 16.4 20 12 20C7.6 20 4 16.4 4 12Z" />
+                <path d="M9 9L15 9M9 12H13M9 15H11" />
+              </svg>
+            </div>
+            <h3 class="feature-title">Ridiculous micro‑animations</h3>
+            <p class="feature-desc">
+              Hover ripples, floating blobs, glowing borders, orbiting icons—the whole UI breathes, pulses, and reacts as you move your mouse or scroll.
+            </p>
+            <div class="feature-meta">
+              <span class="pill">GPU‑friendly motion</span>
+              <span>CSS only · no heavy libs</span>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" style="background:radial-gradient(circle at 100% 0,rgba(56,189,248,0.9),rgba(15,23,42,1));box-shadow:0 12px 24px rgba(56,189,248,0.8)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 6H19V18H5Z" />
+                <path d="M7 10.5H11M7 14H9.5" />
+                <path d="M20 8L17.5 10.5L15 13" />
+              </svg>
+            </div>
+            <h3 class="feature-title">Teacher‑safe disclaimer zone</h3>
+            <p class="feature-desc">
+              Built‑in disclaimer and toggle so it’s obvious this is a <strong>cosmetic mod</strong> only. No answers, no grade edits, no backend trickery—just UI for demos and screenshots.
+            </p>
+            <div class="feature-meta">
+              <span class="pill">Transparent by design</span>
+              <span>Doesn’t touch real data</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section flow reveal" id="how-it-works">
+        <div class="flow-diagram">
+                 <div class="flow-diagram-header">
+            <div class="flow-diagram-badge">
+              <svg viewBox="0 0 24 24">
+                <path d="M5 12L10 17L19 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Visual engine
+            </div>
+            <span class="flow-diagram-label">Fake-completion renderer</span>
+          </div>
+
+          <div class="flow-rail">
+            <div class="flow-step-pill">Overlay prep</div>
+            <div class="flow-step-pill">Scan tasks</div>
+            <div class="flow-step-pill">Apply visuals</div>
+            <div class="flow-step-highlight"></div>
+          </div>
+
+          <div class="flow-body">
+            <div class="flow-stack">
+              <div class="flow-chip">
+                <span class="bullet"></span>
+                <span class="label">Detect page structure</span>
+              </div>
+              <div class="flow-chip">
+                <span class="bullet"></span>
+                <span class="label">Wrap each task in mod layer</span>
+              </div>
+              <div class="flow-chip">
+                <span class="bullet"></span>
+                <span class="label">Inject glow + animations</span>
+              </div>
+
+              <p class="flow-note">
+                Nothing changes server-side — every effect is <strong>CSS, DOM injection, and animations only</strong>.
+              </p>
+            </div>
+
+            <div class="flow-console">
+              <div class="flow-console-header">
+                <div class="flow-console-dots">
+                  <div class="flow-console-dot"></div>
+                  <div class="flow-console-dot"></div>
+                  <div class="flow-console-dot"></div>
+                </div>
+                <span>modifier.js</span>
+              </div>
+
+              <div class="flow-console-body">
+                <div class="flow-line fade">
+                  <span class="flow-line-number">01</span>
+                  <span class="flow-line-code token-comment">// scan Deltamath for tasks</span>
+                </div>
+
+                <div class="flow-line">
+                  <span class="flow-line-number">02</span>
+                  <span class="flow-line-code">
+                    <span class="token-keyword">const</span> tasks =
+                    document.querySelectorAll(<span class="token-str">'[data-problem]'</span>);
+                  </span>
+                </div>
+
+                <div class="flow-line fade">
+                  <span class="flow-line-number">03</span>
+                  <span class="flow-line-code token-comment">// cosmetic only</span>
+                </div>
+
+                <div class="flow-line">
+                  <span class="flow-line-number">04</span>
+                  <span class="flow-line-code">
+                    tasks.forEach(<span class="token-func">t</span> =>
+                    t.classList.add(<span class="token-str">'dm-mod-complete'</span>));
+                  </span>
+                </div>
+
+                <div class="flow-line fade">
+                  <span class="flow-line-number">05</span>
+                  <span class="flow-line-code token-boolean">true</span>
+                  <span class="token-comment"> // no backend access</span>
+                </div>
+              </div>
+
+              <div class="flow-sparkle"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-copy">
+          <p>
+            Deltamath Modifier transforms your dashboard into a <strong>cinematic, fully-completed masterpiece</strong>.
+            It never touches assignments, never edits answers, never communicates with servers.
+          </p>
+          <p>
+            Think of it as <strong>a UI-overhaul filter</strong> that makes your page look worthy of a tech demo or
+            aesthetic portfolio screenshot.
+          </p>
+        </div>
+      </section>
+
+      <!-- CTA SECTION -->
+      <section class="cta-section reveal">
+        <div class="cta-shell">
+          <div>
+            <h2 class="cta-main-title">Install the Modifier & upgrade your vibes.</h2>
+            <p class="cta-subtitle">
+              Turn your boring homework dashboard into a glowing, animated masterpiece.
+              Again: <strong>visual only</strong>. No cheating. No backend touching. Just pure UI sauce.
+            </p>
+
+            <div class="cta-actions">
+                <a href="https://chromewebstore.google.com/detail/mailtracker-email-tracker/ekfbnepodnfmfakhoahmcaompfnhmdda">
+              <button class="btn-primary" type="button">
+                <span>Install the extension</span>
+                <span class="icon">⇩</span>
+              </button>
+</a>
+              <a href="#features" class="btn-ghost">
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none">
+                  <path d="M5 11.5L10.5 17L19 7"/>
+                </svg>
+                View features
+              </a>
+            </div>
+
+            <div class="cta-tag-row">
+              <div class="cta-tag">
+                <svg viewBox="0 0 24 24"><path d="M12 5V19M5 12H19" /></svg>
+                Lightweight
+              </div>
+              <div class="cta-tag">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7V12L15 15"/></svg>
+                Always cosmetic
+              </div>
+              <div class="cta-tag">
+                <svg viewBox="0 0 24 24"><path d="M4 7H20M4 12H14M4 17H11"/></svg>
+                No data collected
+              </div>
+            </div>
+          </div>
+
+          <div class="cta-metric-card">
+            <h3>UI Satisfaction Rating</h3>
+
+            <div class="cta-metric-main">
+              <span class="cta-metric-value">98%</span>
+              <div class="cta-metric-chip">
+                <svg viewBox="0 0 24 24"><path d="M12 3L13.9 8.1L19.5 8.6L15 12.1L16.4 17.6L12 14.7L7.6 17.6L9 12.1L4.5 8.6L10.1 8.1L12 3Z"/></svg>
+                aesthetic boost
+              </div>
+            </div>
+
+            <div class="cta-meter-shell">
+              <div class="cta-meter-inner"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer>
+        <span>© 2025 Deltamath Modifier — visual mod only.</span>
+        <div class="footer-links">
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#">Privacy</a>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const onScroll = () => {
+      const trigger = window.innerHeight * 0.85;
+      reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < trigger) el.classList.add('visible');
+      });
+    };
+    document.addEventListener('scroll', onScroll);
+    onScroll();
+  </script>
+
+</body>
+</html>
