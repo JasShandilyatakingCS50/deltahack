@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Deltamath Modifier – Privacy Policy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-soft: #020617;
+      --card: rgba(15, 23, 42, 0.96);
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.35);
+      --accent-2: #a855f7;
+      --accent-3: #22d3ee;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.2);
+      --radius-xl: 32px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: background 250ms ease, color 250ms ease, transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.12) 0, transparent 55%),
+        radial-gradient(circle at top right, rgba(59,130,246,0.18) 0, transparent 60%),
+        radial-gradient(circle at bottom, rgba(168,85,247,0.18) 0, transparent 60%),
+        var(--bg);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.2;
+      mix-blend-mode: soft-light;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 20px 72px;
+    }
+
+    /* HEADER -------------------------------------------------- */
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.3) 0, transparent 60%),
+        linear-gradient(to right, rgba(15,23,42,0.96), rgba(15,23,42,0.96));
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.35);
+      box-shadow: 0 18px 60px rgba(15,23,42,0.9);
+      backdrop-filter: blur(24px);
+      position: sticky;
+      top: 16px;
+      z-index: 40;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 20%, #38bdf8 0, #1d4ed8 30%, #a855f7 70%, #0f172a 100%);
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(248,250,252,0.75);
+      box-shadow: 0 14px 32px rgba(15,23,42,1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .brand-tagline {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-pill {
+      font-size: 11px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15,23,42,0.9);
+    }
+
+    .nav-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.4);
+    }
+
+    .btn-ghost-sm {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.55);
+      background: rgba(15,23,42,0.92);
+      color: var(--text-main);
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-ghost-sm svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* HERO -------------------------------------------------- */
+
+    .hero {
+      margin-top: 42px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
+      gap: 30px;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page-shell {
+        padding-inline: 16px;
+      }
+    }
+
+    .hero-copy {
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px 4px 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.35);
+      background:
+        radial-gradient(circle at left, rgba(56,189,248,0.32) 0, transparent 55%),
+        rgba(15,23,42,0.95);
+      font-size: 11px;
+      color: var(--text-muted);
+      gap: 8px;
+    }
+
+    .hero-eyebrow-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(148,163,184,0.55);
+      color: #e5e7eb;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 9px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 3.5vw, 3rem);
+      line-height: 1.05;
+      margin-top: 18px;
+      margin-bottom: 12px;
+    }
+
+    .hero-title span.gradient {
+      background: linear-gradient(120deg, #38bdf8, #a855f7, #f97316);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      max-width: 36rem;
+    }
+
+    .hero-subtitle strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      font-size: 11px;
+      color: var(--text-muted);
+      align-items: center;
+    }
+
+    .hero-tag {
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148,163,184,0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 9px;
+      color: rgba(209,213,219,0.92);
+    }
+
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 11px;
+    }
+
+    .hero-badge {
+      border-radius: 999px;
+      padding: 4px 10px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.92);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-badge svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .hero-right {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(26px);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      animation: floatBlob 18s ease-in-out infinite;
+    }
+
+    .blob.blob-blue {
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle at 20% 0, rgba(56,189,248,0.9), transparent 60%);
+      top: -40px;
+      right: -10px;
+    }
+
+    .blob.blob-purple {
+      width: 260px;
+      height: 240px;
+      background: radial-gradient(circle at 100% 100%, rgba(168,85,247,0.9), transparent 65%);
+      bottom: -40px;
+      left: -30px;
+      animation-delay: -4s;
+    }
+
+    .blob.blob-cyan {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle at 50% 50%, rgba(34,211,238,0.85), transparent 65%);
+      bottom: 40px;
+      right: 40px;
+      animation-delay: -8s;
+    }
+
+    @keyframes floatBlob {
+      0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: 0.9; }
+      25% { transform: translate3d(10px,-16px,0) scale(1.04); opacity: 0.8; }
+      50% { transform: translate3d(-14px,8px,0) scale(1.02); opacity: 0.85; }
+      75% { transform: translate3d(4px,18px,0) scale(1.05); opacity: 0.78; }
+    }
+
+    .hero-card {
+      position: relative;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 18px 18px 14px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(15,23,42,0.99), rgba(15,23,42,0.96));
+      border: 1px solid rgba(148,163,184,0.45);
+      box-shadow: 0 20px 70px rgba(15,23,42,1);
+      backdrop-filter: blur(26px);
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transform: perspective(1200px) rotateX(10deg) rotateY(-12deg);
+      animation: floatCard 11s ease-in-out infinite alternate;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(from 180deg, rgba(56,189,248,0.7), rgba(129,140,248,0.4), rgba(248,250,252,0.2), rgba(236,72,153,0.5));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes floatCard {
+      0% { transform: perspective(1200px) rotateX(10deg) rotateY(-12deg) translateY(0); }
+      50% { transform: perspective(1200px) rotateX(7deg) rotateY(-6deg) translateY(-8px); }
+      100% { transform: perspective(1200px) rotateX(11deg) rotateY(-14deg) translateY(4px); }
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 11px;
+    }
+
+    .hero-card-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .hero-card-title span.label {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(148,163,184,0.95);
+      font-size: 9px;
+    }
+
+    .hero-card-title strong {
+      font-size: 14px;
+    }
+
+    .hero-card-chip {
+      border-radius: 999px;
+      padding: 4px 9px;
+      border: 1px solid rgba(34,197,94,0.7);
+      background: rgba(15,23,42,0.98);
+      color: #bbf7d0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-card-chip svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .hero-card-body {
+      border-radius: 18px;
+      padding: 10px 10px 8px;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,0.7), rgba(15,23,42,1) 60%),
+        radial-gradient(circle at bottom right, rgba(168,85,247,0.5), transparent 60%);
+      border: 1px solid rgba(30,64,175,1);
+      box-shadow: inset 0 0 40px rgba(15,23,42,0.9);
+      font-size: 11px;
+    }
+
+    .hero-card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 8px;
+      border-radius: 12px;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid rgba(30,64,175,0.7);
+      margin-bottom: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card-row::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(56,189,248,0.12), rgba(56,189,248,0), rgba(236,72,153,0.18));
+      opacity: 0;
+      transform: translateX(-30%);
+    }
+
+    .hero-card-row.highlight::before {
+      animation: rowGlow 5.4s ease-in-out infinite;
+    }
+
+    @keyframes rowGlow {
+      0% { opacity: 0; transform: translateX(-40%); }
+      20% { opacity: 1; transform: translateX(0%); }
+      60% { opacity: 1; transform: translateX(30%); }
+      100% { opacity: 0; transform: translateX(50%); }
+    }
+
+    .hero-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.95);
+      background: rgba(15,23,42,0.98);
+      font-size: 10px;
+      color: rgba(209,213,219,0.96);
+    }
+
+    .hero-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 10px;
+      color: rgba(209,213,219,0.96);
+      gap: 10px;
+    }
+
+    .hero-card-footer span.icon-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-card-footer svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* LAYOUT -------------------------------------------------- */
+
+    .layout {
+      margin-top: 52px;
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.6fr);
+      gap: 26px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 880px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .toc {
+      position: sticky;
+      top: 116px;
+      align-self: flex-start;
+      border-radius: 22px;
+      padding: 14px 14px 12px;
+      background: linear-gradient(145deg, rgba(15,23,42,0.98), rgba(15,23,42,0.96));
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 18px 46px rgba(15,23,42,0.95);
+      font-size: 11px;
+    }
+
+    .toc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .toc-title {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .toc-chip {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      padding: 3px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      color: rgba(209,213,219,0.96);
+      background: rgba(15,23,42,0.98);
+    }
+
+    .toc-chip svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .toc-list {
+      list-style: none;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toc-list a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 6px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .toc-list a span.bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.9);
+      box-shadow: 0 0 0 3px rgba(30,64,175,0.2);
+      flex-shrink: 0;
+    }
+
+    .toc-list a.active {
+      background: rgba(15,23,42,0.95);
+      color: #e5e7eb;
+    }
+
+    .toc-list a.active span.bullet {
+      background: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.5);
+    }
+
+    .toc-footer {
+      margin-top: 10px;
+      border-top: 1px solid rgba(31,41,55,1);
+      padding-top: 7px;
+      font-size: 10px;
+      color: rgba(148,163,184,0.9);
+    }
+
+    .toc-footer strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .policy-card {
+      border-radius: 26px;
+      padding: 20px 18px 18px;
+      background: var(--card);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 26px 70px rgba(15,23,42,0.98);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .policy-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.6), rgba(59,130,246,0), rgba(168,85,247,0.7));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      pointer-events: none;
+      animation: borderGlow 12s ease-in-out infinite;
+    }
+
+    @keyframes borderGlow {
+      0%, 40% { opacity: 0; }
+      50%, 70% { opacity: 0.9; }
+      100% { opacity: 0; }
+    }
+
+    .policy-header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .policy-header-row {
+        flex-direction: column;
+      }
+    }
+
+    .policy-title-block h1 {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .policy-title-block p {
+      font-size: 12px;
+      color: var(--text-muted);
+      max-width: 420px;
+    }
+
+    .policy-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .policy-meta span.label {
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 9px;
+      color: rgba(148,163,184,0.95);
+    }
+
+    .policy-meta strong {
+      color: #e5e7eb;
+    }
+
+    .policy-section {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(31,41,55,1);
+    }
+
+    .policy-section:first-of-type {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .policy-section h2 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .policy-section h3 {
+      font-size: 13px;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+
+    .policy-section p {
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .policy-section ul {
+      margin-top: 6px;
+      padding-left: 18px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .policy-section li + li {
+      margin-top: 3px;
+    }
+
+    .policy-section strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .callout {
+      margin-top: 10px;
+      border-radius: 14px;
+      padding: 8px 10px;
+      border: 1px dashed rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.96);
+      font-size: 11px;
+      color: rgba(209,213,219,0.96);
+    }
+
+    /* REVEAL -------------------------------------------------- */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+      transition:
+        opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* FOOTER -------------------------------------------------- */
+
+    footer {
+      margin-top: 28px;
+      font-size: 11px;
+      color: rgba(148,163,184,0.9);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: rgba(148,163,184,0.9);
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    .footer-links a:hover {
+      color: rgba(226,232,240,0.96);
+    }
+  </style>
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <main>
+    <div class="page-shell">
+
+      <!-- HEADER -->
+      <header>
+        <div class="brand">
+          <div class="brand-logo">
+            <svg viewBox="0 0 40 40" aria-hidden="true">
+              <defs>
+                <linearGradient id="gradPolicy" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#e0f2fe" />
+                  <stop offset="45%" stop-color="#38bdf8" />
+                  <stop offset="100%" stop-color="#a855f7" />
+                </linearGradient>
+              </defs>
+              <rect x="5" y="5" width="30" height="30" rx="9" fill="url(#gradPolicy)" opacity="0.18" />
+              <path d="M13 27H26V13L22 9H13V27Z" fill="none" stroke="url(#gradPolicy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18 17H22M18 21H24" stroke="#e5e7eb" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="15" cy="24.5" r="1.3" fill="#22c55e"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Deltamath Modifier</span>
+            <span class="brand-tagline">Privacy & data practices</span>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <div class="nav-pill">
+            <span class="nav-pill-dot"></span>
+            No bullshit · No tracking
+          </div>
+          <a class="btn-ghost-sm" href="/index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12H20M10 7L4 12L10 17" />
+            </svg>
+            Back to main page
+          </a>
+        </div>
+      </header>
+
+      <!-- HERO -->
+      <section class="hero reveal">
+        <div class="hero-copy">
+          <div class="hero-eyebrow">
+            <span class="hero-eyebrow-pill">Privacy policy</span>
+            <span>Written like we actually respect you.</span>
+          </div>
+          <h1 class="hero-title">
+            A <span class="gradient">real</span> privacy policy.<br/> No dark patterns. No tracking games.
+          </h1>
+          <p class="hero-subtitle">
+            This page explains, in detail, what the Deltamath Modifier extension does with your data:
+            <strong>basically nothing</strong>. No sneaky collection, no weird telemetry—just what is required to
+            operate a visual-only Chrome extension and read anonymous analytics that Google itself aggregates.
+          </p>
+
+          <div class="hero-meta-row">
+            <span class="hero-tag">Chrome-compliant · GDPR · CCPA</span>
+            <span>Extension scope: <strong>client-side UI only</strong></span>
+          </div>
+
+          <div class="hero-badge-row">
+            <div class="hero-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M9 12.5L11 14.5L15.5 9.5"/>
+              </svg>
+              No personal data stored
+            </div>
+            <div class="hero-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7H20M4 12H16M4 17H12"/>
+              </svg>
+              Purely cosmetic overlay logic
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="blob blob-blue"></div>
+          <div class="blob blob-purple"></div>
+          <div class="blob blob-cyan"></div>
+
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <div class="hero-card-title">
+                <span class="label">Data snapshot</span>
+                <strong>What we actually keep</strong>
+              </div>
+              <div class="hero-card-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12L10 17L19 7"/>
+                </svg>
+                Zero tracking
+              </div>
+            </div>
+
+            <div class="hero-card-body">
+              <div class="hero-card-row highlight">
+                <span>Local setting: <strong>enabled / disabled</strong></span>
+                <span class="hero-pill">Stored in chrome.storage</span>
+              </div>
+              <div class="hero-card-row">
+                <span>Personal info:</span>
+                <span class="hero-pill">Not collected</span>
+              </div>
+              <div class="hero-card-row">
+                <span>Browsing history:</span>
+                <span class="hero-pill">Not collected</span>
+              </div>
+              <div class="hero-card-row">
+                <span>Passwords, messages, grades:</span>
+                <span class="hero-pill">Never touched</span>
+              </div>
+
+              <div class="hero-card-footer">
+                <span class="icon-text">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3L4 9V19H20V9L12 3Z" />
+                    <path d="M9 14L11 16L15 12" />
+                  </svg>
+                  Client-side only
+                </span>
+                <span style="color:rgba(156,163,175,0.95);">Policy below breaks all of this down line by line.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYOUT -->
+      <section class="layout">
+        <!-- TOC -->
+        <aside class="toc reveal">
+          <div class="toc-header">
+            <div>
+              <div class="toc-title">On this page</div>
+            </div>
+            <div class="toc-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M9 12.5L11 14.5L15.5 9.5" />
+              </svg>
+              Quick navigator
+            </div>
+          </div>
+          <ul class="toc-list">
+            <li><a href="#intro"><span class="bullet"></span>1. Introduction</a></li>
+            <li><a href="#data-extension"><span class="bullet"></span>2. What data the extension collects</a></li>
+            <li><a href="#google-analytics"><span class="bullet"></span>3. Chrome Web Store analytics</a></li>
+            <li><a href="#data-categories"><span class="bullet"></span>4. Data categories</a></li>
+            <li><a href="#data-use"><span class="bullet"></span>5–8. Use, legal basis & rights</a></li>
+            <li><a href="#security-sharing"><span class="bullet"></span>9–10. Security & sharing</a></li>
+            <li><a href="#changes-contact"><span class="bullet"></span>11–13. Changes & contact</a></li>
+          </ul>
+          <div class="toc-footer">
+            <strong>Tip:</strong> click any section to jump there. Everything here mirrors exactly what&apos;s in the Chrome listing.
+          </div>
+        </aside>
+
+        <!-- POLICY -->
+        <article class="policy-card reveal" id="policy-top">
+          <div class="policy-header-row">
+            <div class="policy-title-block">
+              <h1>Privacy Policy</h1>
+              <p>
+                This is the full, detailed privacy policy for the Deltamath Modifier Chrome extension.
+                It is written to be transparent, Chrome-store-friendly, and brutally clear about what
+                does and does not happen with your data.
+              </p>
+            </div>
+            <div class="policy-meta">
+              <span class="label">Last updated</span><br/>
+              <strong>[Insert Date]</strong><br/>
+              <span>Developer: [Your Name / Org]</span>
+            </div>
+          </div>
+
+          <!-- INTRO -->
+          <section class="policy-section" id="intro">
+            <h2>1. Introduction</h2>
+            <p>
+              This Privacy Policy describes how this browser extension (“the Extension,” “we,” “our,” or “us”)
+              handles information, including data that may be provided through <strong>aggregated analytics made
+              available by the Chrome Web Store Developer Dashboard</strong>. The Extension itself does
+              <strong>not directly collect</strong>, store, transmit, process, or analyze personal information or sensitive
+              data from users. Instead, certain high-level, non-identifying, aggregated analytics categories may be
+              provided automatically by Google as part of the Chrome Web Store’s developer insight tools.
+            </p>
+            <p>
+              We are committed to transparency, user safety, and adherence to global privacy regulations, including the
+              General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA/CPRA), and other relevant
+              standards. This document explains what information we may receive, how such information is used, and what
+              rights and controls users maintain.
+            </p>
+            <p>
+              This Privacy Policy governs your use of the Extension available on the Chrome Web Store. The Extension is
+              designed to operate within the user’s browser environment without collecting or transmitting user data. The
+              Extension performs only client-side interface adjustments and does not communicate any personal or browsing
+              information to our servers, because we do not operate servers or remote data endpoints.
+            </p>
+            <p>
+              However, Google may provide anonymized, aggregated analytics to extension developers for the purposes of
+              understanding general usage metrics, performance insights, or broad behavioral categories. These analytics
+              categories may include:
+            </p>
+            <ul>
+              <li>User Activity</li>
+              <li>Website Content</li>
+              <li>Personally Identifiable Information (PII) classifications</li>
+            </ul>
+            <p>
+              These analytics categories reflect <strong>Google’s categorization of aggregate metrics only</strong> and do
+              <strong>not</strong> indicate that the Extension collects or stores data itself. This policy is intended to clarify
+              these practices fully, openly, and without ambiguity.
+            </p>
+          </section>
+
+          <!-- 2. DATA BY EXTENSION -->
+          <section class="policy-section" id="data-extension">
+            <h2>2. What Data the Extension Itself Collects</h2>
+
+            <h3>2.1 Direct Data Collection by the Extension</h3>
+            <p>
+              The Extension <strong>does not directly collect</strong>:
+            </p>
+            <ul>
+              <li>Personal data</li>
+              <li>Browsing history</li>
+              <li>User input</li>
+              <li>Keystrokes</li>
+              <li>Mouse movements</li>
+              <li>Scroll data</li>
+              <li>Network details</li>
+              <li>Account information</li>
+              <li>Cookies</li>
+              <li>IP addresses</li>
+              <li>Device identifiers</li>
+              <li>Demographic information</li>
+              <li>Website content</li>
+              <li>Images, text, or videos displayed on websites</li>
+            </ul>
+            <p>
+              The Extension does not monitor, intercept, record, log, or transmit any such information.
+            </p>
+
+            <h3>2.2 Local-Only Settings</h3>
+            <p>
+              The only information stored locally is:
+            </p>
+            <ul>
+              <li>A boolean toggle setting (“enabled” or “disabled”)</li>
+            </ul>
+            <p>
+              This value:
+            </p>
+            <ul>
+              <li>Remains entirely within <strong>chrome.storage.sync/local</strong></li>
+              <li>Is not transmitted off the device</li>
+              <li>Is not shared with anyone</li>
+              <li>Contains no identifiable data</li>
+              <li>Is user-removable at any time</li>
+            </ul>
+          </section>
+
+          <!-- 3. GOOGLE ANALYTICS -->
+          <section class="policy-section" id="google-analytics">
+            <h2>3. Google Chrome Web Store Aggregate Analytics</h2>
+
+            <h3>3.1 What These Analytics Are</h3>
+            <p>
+              The Chrome Web Store may provide developers with <strong>anonymous, aggregated analytics</strong>.
+              These do <strong>not</strong> include identifiable user data. Instead, they categorize user behavior into
+              high-level buckets, such as:
+            </p>
+            <ul>
+              <li><strong>User Activity</strong> (e.g., extension install, open rate)</li>
+              <li><strong>Website Content Interactions</strong> (in aggregate)</li>
+              <li><strong>PII Categories</strong> (only as classification labels in analytics dashboards)</li>
+            </ul>
+            <p>
+              These analytics represent <strong>Google’s internal categorization</strong>, not data collected by the extension.
+            </p>
+
+            <h3>3.2 Examples of Analytics Categories Provided</h3>
+            <p>Chrome Web Store analytics may show:</p>
+            <ul>
+              <li>Number of installations</li>
+              <li>Number of uninstalls</li>
+              <li>Number of active users</li>
+              <li>Region-level aggregated data</li>
+              <li>Chrome version usage</li>
+              <li>Generic interaction metrics</li>
+              <li>Aggregate “interest categories” related to Google accounts</li>
+            </ul>
+            <p>These DO NOT include:</p>
+            <ul>
+              <li>Names</li>
+              <li>Email addresses</li>
+              <li>Exact browsing data</li>
+              <li>Messages</li>
+              <li>Passwords</li>
+              <li>Form entries</li>
+              <li>Individual identities</li>
+              <li>Personal behavioral histories</li>
+            </ul>
+
+            <h3>3.3 Purpose of These Analytics</h3>
+            <p>
+              We may use the anonymized analytics provided by Google to:
+            </p>
+            <ul>
+              <li>Improve extension stability</li>
+              <li>Identify performance issues</li>
+              <li>Understand general usage patterns</li>
+              <li>Determine compatibility with browser versions</li>
+              <li>Analyze installation trends</li>
+              <li>Guide feature updates</li>
+              <li>Improve localization decisions</li>
+              <li>Provide better support experience</li>
+            </ul>
+            <p>All analytics remain fully anonymized and aggregated.</p>
+
+            <h3>3.4 Opt-Out from Analytics</h3>
+            <p>
+              Users may prevent Google from providing analytics indirectly through:
+            </p>
+            <ul>
+              <li>Adjusting Google Account ad personalization settings</li>
+              <li>Restricting Chrome usage reporting</li>
+              <li>Using Chrome’s “Do Not Track” options</li>
+              <li>Blocking third-party cookies</li>
+            </ul>
+          </section>
+
+          <!-- 4. TYPES OF DATA CATEGORIES -->
+          <section class="policy-section" id="data-categories">
+            <h2>4. Types of Data Categories Google May Classify</h2>
+
+            <h3>4.1 User Activity Category</h3>
+            <p>
+              This may include aggregated metrics like:
+            </p>
+            <ul>
+              <li>Number of times the extension icon is clicked</li>
+              <li>Number of active sessions</li>
+              <li>Usage frequency</li>
+              <li>Installation and uninstall counts</li>
+              <li>Device OS distribution</li>
+              <li>Browser versions</li>
+            </ul>
+            <p>
+              <strong>The extension itself does not record activity.</strong> This is purely Google’s anonymous reporting.
+            </p>
+
+            <h3>4.2 Website Content Category</h3>
+            <p>
+              Google may categorize browser environments into high-level classifications, such as:
+            </p>
+            <ul>
+              <li>Commonly visited content categories</li>
+              <li>Types of pages where extensions are enabled</li>
+              <li>Aggregate content interactions</li>
+            </ul>
+            <p>
+              This category <strong>does not contain site content</strong>, text, images, user messages, uploads, or
+              downloads.
+            </p>
+            <p>
+              The Extension never reads page content beyond identifying UI elements necessary for functionality and never
+              stores or transmits anything.
+            </p>
+
+            <h3>4.3 Personally Identifiable Information (PII) Category</h3>
+            <p>
+              This category does <strong>not</strong> mean PII is collected. It refers to Google’s internal label describing
+              whether an extension <em>could</em> theoretically interact with PII-heavy environments.
+            </p>
+            <p>
+              The Extension itself:
+            </p>
+            <ul>
+              <li>Does not access PII</li>
+              <li>Does not process PII</li>
+              <li>Does not handle user accounts</li>
+              <li>Does not require login</li>
+              <li>Does not interface with third-party profiles</li>
+              <li>Does not transmit PII anywhere</li>
+            </ul>
+            <p>
+              Google may still place the extension into this analytics category based on webpage contexts where the extension
+              may operate, not based on actual data collection.
+            </p>
+          </section>
+
+          <!-- 5. HOW DATA IS USED -->
+          <section class="policy-section" id="data-use">
+            <h2>5. How Data Is Used</h2>
+
+            <h3>5.1 Extension Functionality</h3>
+            <p>
+              All interface modifications performed by the Extension occur locally and do not rely on collected data.
+            </p>
+
+            <h3>5.2 Analytics Usage</h3>
+            <p>
+              Any analytics available via Chrome Web Store:
+            </p>
+            <ul>
+              <li>Are anonymous</li>
+              <li>Cannot identify users</li>
+              <li>Cannot be reverse-engineered</li>
+              <li>Are processed and controlled by Google</li>
+              <li>Are used strictly for extension improvement</li>
+            </ul>
+            <p>
+              We do <strong>not</strong> sell, share, trade, license, or distribute any analytics data.
+            </p>
+
+            <h2>6. Legal Basis for Data Handling</h2>
+
+            <h3>6.1 GDPR Compliance</h3>
+            <p>
+              Even though we do not collect personal data, we adhere to GDPR principles:
+            </p>
+            <ul>
+              <li><strong>Lawfulness, fairness, transparency</strong></li>
+              <li><strong>Data minimization</strong></li>
+              <li><strong>Purpose limitation</strong></li>
+              <li><strong>Accuracy</strong></li>
+              <li><strong>Storage limitation</strong></li>
+              <li><strong>Integrity and confidentiality</strong></li>
+            </ul>
+
+            <h3>6.2 CCPA / CPRA Compliance</h3>
+            <p>
+              Under California law:
+            </p>
+            <ul>
+              <li>We do not “sell” personal data</li>
+              <li>We do not collect personal information</li>
+              <li>Users do not need opt-out mechanisms for data selling</li>
+              <li>No advertising identifiers are collected</li>
+              <li>Analytics remain anonymized</li>
+            </ul>
+
+            <h3>6.3 Children’s Online Privacy Protection Act (COPPA)</h3>
+            <p>
+              The Extension:
+            </p>
+            <ul>
+              <li>Is not targeted to children</li>
+              <li>Does not collect age, birthdates, or demographic data</li>
+              <li>Is safe for general audiences</li>
+              <li>Contains no tracking</li>
+            </ul>
+
+            <h2>7. Data Retention</h2>
+
+            <h3>7.1 Local Data</h3>
+            <p>
+              Only the “enabled/disabled” toggle is stored. Users can delete it by:
+            </p>
+            <ul>
+              <li>Resetting Chrome sync</li>
+              <li>Clearing extension storage</li>
+              <li>Uninstalling the extension</li>
+            </ul>
+
+            <h3>7.2 Analytics Retention</h3>
+            <p>
+              Analytics retention is fully controlled by Google. We have no ability to access raw data or modify retention
+              periods.
+            </p>
+
+            <h2>8. Data Deletion / User Rights</h2>
+            <p>
+              Users maintain the right to:
+            </p>
+            <ul>
+              <li>Remove the extension at any time</li>
+              <li>Delete all locally stored data</li>
+              <li>Disable Chrome sync</li>
+              <li>Clear Chrome’s storage</li>
+              <li>Restrict analytics sharing at the Google Account level</li>
+            </ul>
+            <p>
+              Under GDPR:
+            </p>
+            <ul>
+              <li>Right to access</li>
+              <li>Right to restrict processing</li>
+              <li>Right to erasure</li>
+              <li>Right to data portability</li>
+              <li>Right to object</li>
+              <li>Right not to be subject to automated decision-making</li>
+            </ul>
+            <p>
+              Since we do <strong>not</strong> collect identifiable data, these rights apply to analytics only insofar as Google
+              provides the mechanisms.
+            </p>
+          </section>
+
+          <!-- 9–10 SECURITY & SHARING -->
+          <section class="policy-section" id="security-sharing">
+            <h2>9. Security Practices</h2>
+
+            <h3>9.1 Extension-Level Security</h3>
+            <p>
+              The Extension:
+            </p>
+            <ul>
+              <li>Contains no remote code execution</li>
+              <li>Does not load remote scripts</li>
+              <li>Operates fully locally</li>
+              <li>Contains no telemetry endpoints</li>
+              <li>Performs no external network communication</li>
+              <li>Has no server-side infrastructure</li>
+            </ul>
+
+            <h3>9.2 Google&apos;s Security Measures</h3>
+            <p>
+              All analytics are:
+            </p>
+            <ul>
+              <li>Aggregated</li>
+              <li>Anonymized</li>
+              <li>Filtered through Google’s internal privacy systems</li>
+              <li>Protected by industry-standard safeguards</li>
+            </ul>
+
+            <h2>10. Third-Party Sharing</h2>
+            <p>
+              We do not share analytics with:
+            </p>
+            <ul>
+              <li>Advertisers</li>
+              <li>Data brokers</li>
+              <li>Affiliates</li>
+              <li>Third-party platforms</li>
+              <li>Government agencies</li>
+              <li>AI training datasets</li>
+              <li>External service providers</li>
+            </ul>
+            <p>
+              The only “third party” involved is Google, which provides analytics.
+            </p>
+          </section>
+
+          <!-- 11–13 CHANGES / CONTACT -->
+          <section class="policy-section" id="changes-contact">
+            <h2>11. Changes to This Policy</h2>
+            <p>
+              We reserve the right to update this Privacy Policy to:
+            </p>
+            <ul>
+              <li>Comply with new laws</li>
+              <li>Improve clarity</li>
+              <li>Reflect changes in extension behavior</li>
+              <li>Reflect changes in Google’s analytics categories</li>
+            </ul>
+            <p>
+              Users will be notified through the Chrome Web Store listing page.
+            </p>
+
+            <h2>12. Contact Information</h2>
+            <p>
+              For privacy questions, concerns, or requests:
+            </p>
+            <ul>
+              <li><strong>Email:</strong> [Your Contact Email Here]</li>
+              <li><strong>Developer:</strong> [Your Name or Organization]</li>
+            </ul>
+            <p>
+              We will respond to all inquiries in compliance with applicable regulations.
+            </p>
+
+            <h2>13. Summary</h2>
+            <p>
+              <strong>In plain language:</strong>
+            </p>
+            <ul>
+              <li>The Extension <strong>does not collect personal data</strong>.</li>
+              <li>Google may provide <strong>anonymous, aggregate analytics</strong>.</li>
+              <li>We do <strong>not</strong> access, store, or transmit sensitive information.</li>
+              <li>All analytics are used solely for performance and improvement.</li>
+              <li>Users retain full control over their data via browser and Google account settings.</li>
+            </ul>
+
+            <div class="callout">
+              This Privacy Policy ensures full compliance with Chrome Web Store requirements and global privacy
+              standards, while being honest about what actually happens in this extension: a visual glow-up for
+              Deltamath, and nothing else.
+            </div>
+          </section>
+        </article>
+      </section>
+
+      <!-- FOOTER -->
+      <footer>
+        <span>© 2025 Deltamath Modifier · Privacy Policy page.</span>
+        <div class="footer-links">
+          <a href="#policy-top">Back to top</a>
+          <a href="#">Main landing page</a>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const handleScroll = () => {
+      const trigger = window.innerHeight * 0.85;
+      reveals.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < trigger) el.classList.add('visible');
+      });
+    };
+    document.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    // TOC active link highlight (very light scroll spy)
+    const tocLinks = document.querySelectorAll('.toc-list a');
+    const sections = Array.from(document.querySelectorAll('.policy-section'));
+
+    const spy = () => {
+      const offset = 120;
+      let currentId = null;
+      sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top - offset < 0) currentId = sec.id;
+      });
+      if (!currentId) return;
+      tocLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+      });
+    };
+
+    document.addEventListener('scroll', spy);
+    spy();
+  </script>
+</body>
+</html>
